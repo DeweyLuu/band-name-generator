@@ -1,11 +1,18 @@
 'use strict';
 
 var express = require('express');
+var bodyParser = require("body-parser");
+var getRandomWord = require('./lib/getRandomWord');
+var Adjective = require('./lib/adjective');
+
 var app = express();
 var port = process.env.PORT || 3000;
 
 app.use(express.static(__dirname + '/app/'));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true}));
 
+/*
 var Adjective = function() {
   this.sleepy = true;
   this.fuzzy = true;
@@ -20,6 +27,7 @@ var Adjective = function() {
   this.magnificent = true;
   this.eloquent = true;
 };
+*/
 var adjective = new Adjective();
 
 var Verb = function() {
@@ -50,11 +58,28 @@ var Noun = function() {
 };
 var noun = new Noun();
 
+function postWord(word, wordObject) {
+  var msg;
+  if (wordObject.hasOwnProperty(word)) {
+    msg = "we already have that word: ";
+  } else {
+    adjective[word] = true;
+    msg = "we saved the word: ";
+  }
+  return {message: msg, confirm: word}
+}
+
+/*
 function getRandomWord (object) {
   var propArray = Object.keys(object);
   var randomProp = propArray[Math.floor(Math.random() * propArray.length)];
   return {word: randomProp};
 }
+*/
+
+app.post('/adjective', function(req, res) {
+  res.json(postWord(req.body.word, adjective));
+});
 
 app.get('/adjective', function(req, res) {
   res.json(getRandomWord(adjective));
