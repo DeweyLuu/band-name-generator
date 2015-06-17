@@ -1,8 +1,7 @@
 'use strict';
 
 $(function() {
-
-  $('form').on("submit", function(e) {
+  $('#adjsubmit').on('submit', function(e) {
     e.preventDefault();
     var userAdjective = $("#user-adjective").val();
     $.post("/adjective", {word: userAdjective}, function(response) {
@@ -12,20 +11,38 @@ $(function() {
     })
   });
 
+  $('#verbsubmit').on('submit', function(e) {
+    e.preventDefault();
+    var userVerb = $("#user-verb").val();
+    $.post("/verb", {word: userVerb}, function(response) {
+      //get something back, do something with it
+      var confirm = (response.message + "<em>" + response.confirm + "</em>");
+      $("#verb-res").html(confirm);
+    })
+  });
+
+  $('#nounsubmit').on('submit', function(e) {
+    e.preventDefault();
+    var userNoun = $("#user-noun").val();
+    $.post("/noun", {word: userNoun}, function(response) {
+      //get something back, do something with it
+      var confirm = (response.message + "<em>" + response.confirm + "</em>");
+      $("#noun-res").html(confirm);
+    })
+  });
+
   $("button").click(function() {
     $.get('/adjective', function(response) {
-      var adjective = response.word;
-      $("#adjective").text(adjective);
+      $("#adjective").text(response.word);
+      //just do response.word? try it
     });
 
     $.get('/verb', function(response) {
-      var verb = response.word;
-      $("#verb").text(verb);
+      $("#verb").text(response.word);
     });
 
     $.get('/noun', function(response) {
-      var noun = response.word;
-      $("#noun").text(noun);
+      $("#noun").text(response.word);
     });
 
   });

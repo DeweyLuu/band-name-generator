@@ -1,6 +1,6 @@
 {
-  "name": "simple-site",
-  "version": "0.0.0",
+  "name": "bandname",
+  "version": "0.0.2",
   "repository": {
     "type": "git",
     "url": "https://github.com/stephanielingwood/band-name-generator"
